@@ -1,0 +1,13 @@
+# Base-R checks of the pure helpers in fetch.R (no network, no fitzRoy needed).
+source("r/fetch.R")
+stopifnot(identical(parse_seasons("2012:2014"), 2012:2014))
+stopifnot(identical(parse_seasons("2026"), 2026L))
+stopifnot(identical(parse_seasons("2019,2021"), c(2019L, 2021L)))
+stopifnot(inherits(try(parse_seasons("2025:2012"), silent = TRUE), "try-error"))
+df <- data.frame(Round = c("1", "24", "QF", "GF", "Grand Final"), x = 1:5)
+stopifnot(identical(home_and_away_only(df)$x, 1:2))
+stopifnot(isTRUE(check_columns(setNames(as.data.frame(matrix(0, 1, length(STATS_COLUMNS))), STATS_COLUMNS))))
+stopifnot(inherits(try(check_columns(data.frame(Season = 1)), silent = TRUE), "try-error"))
+tmp <- tempfile(); writeLines(c("seed = 1", "[splits]", "test_season = 2026"), tmp)
+stopifnot(identical(read_test_season(tmp), 2026L))
+cat("r helpers ok\n")
