@@ -22,7 +22,7 @@ Requests identify the project using `coaches-eye-bench/0.1 (contact: $CEB_CONTAC
 
 * The exported `fetch_coaches_votes()` filters out round 24 (`Round > 23 & !Finals`), which is a real home-and-away round in 24-round seasons, and its output has no finals flag. `r/fetch.R` therefore calls the internal scraper per round with `finals = FALSE`, up to the last round present in the box scores.
 * `fetch_player_stats_afltables()` reads an all-seasons parquet **before** filtering. The project therefore uses `get_afltables_urls()` with explicit season dates, caches only those match pages, and parses them with `scrape_afltables_match()`. No all-seasons statistics download is used. `fetch_meta.json` records fitzRoy/R/package versions and the fetch time.
-* Vote rounds are the actual numeric rounds in that season's box scores, including Round 0 and Round 24. The source's Opening Round URL mapping still needs live verification in the pilot.
+* Vote rounds are the actual numeric rounds in that season's box scores, including Round 0 and Round 24. The source's Opening Round URL mapping still needs live verification in the pilot. A round with no AFLCA data stops that season by default; `Rscript r/fetch.R ... --allow-missing-rounds` records the gap in `fetch_meta.json` instead, and the affected matches are excluded by the join (`no_votes_for_match`) under the protocol's ≥ 99% valid-match floor.
 
 ## Setup and pilot
 

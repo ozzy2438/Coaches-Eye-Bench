@@ -11,4 +11,11 @@ stopifnot(isTRUE(check_columns(setNames(as.data.frame(matrix(0, 1, length(STATS_
 stopifnot(inherits(try(check_columns(data.frame(Season = 1)), silent = TRUE), "try-error"))
 tmp <- tempfile(); writeLines(c("seed = 1", "[splits]", "test_season = 2026"), tmp)
 stopifnot(identical(read_test_season(tmp), 2026L))
+stopifnot(identical(check_missing_rounds(2024, integer(0)), integer(0)))
+stopifnot(inherits(try(check_missing_rounds(2024, 0L), silent = TRUE), "try-error"))
+stopifnot(identical(check_missing_rounds(2024, c(0L, 7L), allow = TRUE), c(0L, 7L)))
+# fitzRoy datasets live in data/ (LazyData): `fitzRoy:::<dataset>` fails at run time, `::` works.
+src <- readLines("r/fetch.R")
+code <- sub("#.*$", "", src)
+stopifnot(!any(grepl("fitzRoy:::(dictionary_afltables|mapping_afltables)", code)))
 cat("r helpers ok\n")

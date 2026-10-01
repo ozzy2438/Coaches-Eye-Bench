@@ -33,7 +33,7 @@ make data                    # complete development data, 2012–2025
 * `make data-pilot` — uses 2024–2025 only. Raw files are reusable by `make data`; processed tables, reduced model choices and smoke outputs are isolated under `data/pilot` and `results/pilot`. These choices are never used for the final study. A failed join still writes the unmatched-row and exclusion reports.
 * `make smoke` — the whole pipeline (ingest → join → QA → models → bootstrap → Holm → blind spots → trends → report) on a **synthetic fixture**, offline, ~15 s. It proves the machinery runs and recovers planted effects; its output is stamped `SYNTHETIC` and is never a result.
 
-The full study, in order: `make train` (selection on validation only) → `make eval-val` → `make eval-test` (single guarded run on 2026) → `make report`. `make test` runs the 66 tests; `make smoke-real` is a plumbing check on two real dev seasons.
+The full study, in order: `make train` (selection on validation only) → `make eval-val` → `make eval-test` (single guarded run on 2026) → `make report`. `make test` runs the 75 tests; `make smoke-real` is a plumbing check on two real dev seasons.
 
 ## Continuous integration
 
@@ -101,7 +101,7 @@ protocol.md  DATA.md  DECISIONS.md  DEVIATIONS.md  FREEZE_LOG.md
 r/fetch.R                  fitzRoy fetch -> parquet (+ r/test_fetch.R)
 src/ceb/                   ingest, names, join, qa, features, splits, models/, evaluate,
                            blindspots, trends, report, card, synth, smoke, guard, cli
-tests/                     66 tests (pytest); recovery tests marked slow
+tests/                     75 tests (pytest); recovery tests marked slow
 results/                   derived outputs only (no raw tables, no player-level votes)
 docs/demo_card_synthetic.html   Match Review Card demo on fictional players
 ```

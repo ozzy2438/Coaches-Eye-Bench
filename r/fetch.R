@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # Fetch public AFL data with fitzRoy and write ONE parquet per season and source.
 #
-#   Rscript r/fetch.R --seasons 2012:2025 [--out data/raw] [--force]
+#   Rscript r/fetch.R --seasons 2012:2025 [--out data/raw] [--force] [--allow-missing-rounds]
 #
 # - AFL Tables player-match stats  : season-scoped pages, parsed by pinned fitzRoy helpers
 # - AFLCA coaches' votes            : fitzRoy:::scrape_coaches_votes, one request per round, finals = FALSE
@@ -67,10 +67,22 @@ fetch_stats_season <- function(season, cache, force = FALSE) {
     }
   }
   stats <- fitzRoy:::scrape_afltables_match(pages)
-  stats <- fitzRoy:::check_and_convert(stats, fitzRoy:::dictionary_afltables)
+  # `dictionary_afltables` is LazyData in fitzRoy's data/, not in its namespace: `:::` cannot see it.
+  stats <- fitzRoy:::check_and_convert(stats, fitzRoy::dictionary_afltables)
   check_columns(stats)
   if (anyNA(stats$Season) || any(stats$Season != season)) stop("unexpected season in AFL Tables response")
   home_and_away_only(stats)
+}
+
+# Rounds that returned no AFLCA data stop the season unless explicitly allowed; allowed gaps are
+# recorded in fetch_meta.json and the affected matches are then excluded by the Python join
+# (no_votes_for_match), where the protocol's >= 99% valid-match floor decides.
+check_missing_rounds <- function(season, miss, allow = FALSE) {
+  if (length(miss) && !allow) {
+    stop("AFLCA rounds missing for ", season, ": ", paste(miss, collapse = ","),
+         "; successful rounds cached; rerun to retry, or pass --allow-missing-rounds to record the gap")
+  }
+  as.integer(miss)
 }
 
 read_test_season <- function(protocol = "protocol.md") {
@@ -88,6 +100,7 @@ main <- function(args = commandArgs(trailingOnly = TRUE)) {
   seasons <- parse_seasons(get_arg("--seasons"))
   out <- get_arg("--out", "data/raw")
   force <- "--force" %in% args
+  allow_missing <- "--allow-missing-rounds" %in% args
   dir.create(out, recursive = TRUE, showWarnings = FALSE)
 
   contact <- Sys.getenv("CEB_CONTACT_EMAIL", "")
@@ -157,8 +170,7 @@ main <- function(args = commandArgs(trailingOnly = TRUE)) {
       }
     }
     if (length(parts) == 0) stop("no AFLCA votes retrieved for ", s)
-    if (length(miss)) stop("AFLCA rounds missing for ", s, ": ", paste(miss, collapse = ","),
-                           "; successful rounds cached; rerun to retry missing rounds")
+    miss <- check_missing_rounds(s, miss, allow_missing)
     v <- do.call(rbind, parts)
     v$Season <- as.integer(v$Season)
     v$Round <- as.integer(v$Round)
