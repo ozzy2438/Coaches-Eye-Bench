@@ -34,11 +34,11 @@ def metrics_table(res: dict) -> str:
     return "\n".join(rows)
 
 
-def comparison_table(res: dict) -> str:
-    rows = ["| Comparison (NDCG@5) | Difference [95% CI] | Relative gain [95% CI] | Holm-adj. p |",
+def comparison_table(res: dict, metric: str = "ndcg5") -> str:
+    rows = [f"| Comparison ({METRIC_NAMES[metric]}) | Difference [95% CI] | Relative gain [95% CI] | Holm-adj. p |",
             "|---|---|---|---|"]
     for name in COMPARISONS:
-        c = res["comparisons"][name]["ndcg5"]
+        c = res["comparisons"][name][metric]
         rows.append(f"| {name.replace('_vs_', ' vs ')} | {_f(c['diff'])} | "
                     f"{c['relative']['point']:+.1%} [{c['relative']['lo']:+.1%}, {c['relative']['hi']:+.1%}] "
                     f"| {_p(c['p_holm'])} |")
@@ -137,7 +137,37 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
             lines[-1] = status + "\n"
     if val is not None:
         lines += ["## Validation seasons (selection happened here, so M1/M2 are mildly optimistic)\n",
+                  f"Evaluated on {val['n_matches']} matches and {val['n_player_matches']} player-matches. "
+                  "Intervals are 95% match-bootstrap intervals conditional on the selected specification. "
+                  "The three pre-specified paired model comparisons use sign-flip tests with Holm correction "
+                  "within each metric; NDCG@5 is primary. Normalized Recall@5 divides hits by "
+                  "`min(5, vote receivers)` and is not conventional recall.\n",
                   metrics_table(val), "", comparison_table(val), ""]
+        lines.append("### Secondary metrics: the same pre-specified contrasts\n")
+        for metric in ("top1", "recall5", "spearman"):
+            lines += [comparison_table(val, metric), ""]
+        descriptive = val.get("descriptive", {}).get("B1_vs_B0", {}).get("ndcg5")
+        if descriptive is not None:
+            lines += [f"B1 minus B0 NDCG@5: {_f(descriptive['diff'])}. This baseline comparison "
+                      "is descriptive; it is outside the three pre-specified inferential contrasts.\n"]
+        for f in findings(val, q2, "validation seasons; used for model selection"):
+            lines.append(f"- {f}")
+        lines.append("")
+        if test is None and not synthetic:
+            block += ["", metrics_table(val), "", "Validation only: M1/M2 used these seasons "
+                      "for specification selection. Full paired tests and Q2/Q3 limitations are "
+                      "in `results/RESULTS.md`."]
+        split_p = results / "val" / "split.json"
+        if split_p.exists():
+            split_d = read_json(split_p)
+            lines += [f"Training seasons: {split_d['train_seasons']}; validation seasons: "
+                      f"{split_d['val_seasons']}. Effective start: {split_d['effective_start']}. "
+                      f"Training matches: {split_d['n_train_matches']}; validation matches: "
+                      f"{split_d['n_val_matches']}.\n"]
+        frozen_p = results / "val" / "frozen_choices.json"
+        if frozen_p.exists():
+            lines += [f"Study choices selected on validation: `{read_json(frozen_p)['choices']}`. "
+                      "Pilot choices are stored separately and are not imported.\n"]
     if test is not None:
         split = f"{test.get('test_season', 'test')} held-out season"
         lines += [f"## Test: {split} (single run, frozen protocol)\n", metrics_table(test), "",
@@ -146,6 +176,10 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
             block.append(f"- {f}")
     if q2 is not None:
         lines.append("## Q2 blind spots (validation seasons)\n")
+        lines.append("Residuals are actual minus M1 expected votes after expected votes are rescaled "
+                     "to sum to 30 in each match. Positive residuals describe disagreement with M1; "
+                     "they do not establish missing defensive work or causal player value. Roles are "
+                     "box-score proxies. Only H2a was pre-specified; other role contrasts are exploratory.\n")
         rc = results / "val" / "q2_role.csv"
         if rc.exists():
             lines += [pd.read_csv(rc).round(3).to_markdown(index=False), ""]
@@ -153,17 +187,68 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
         if ph.exists():
             lines += ["### Post-hoc: residuals relative to M2 (not in protocol)\n",
                       pd.read_csv(ph).round(3).to_markdown(index=False), ""]
+        team_p = results / "val" / "q2_team.csv"
+        if team_p.exists():
+            lines += ["### Team residuals (match-bootstrap intervals; Holm-adjusted within teams)\n",
+                      pd.read_csv(team_p).round(4).to_markdown(index=False), ""]
+        close_p = results / "val" / "q2_closeness.csv"
+        if close_p.exists():
+            lines += ["### Match closeness: signed residuals are structurally zero\n",
+                      "All players in a match share its closeness group, and residuals sum to zero "
+                      "per match. These signed group means cannot measure differences in accuracy "
+                      "across match contexts; numerical p-values must not be interpreted.\n",
+                      pd.read_csv(close_p).round(4).to_markdown(index=False), ""]
+        if q2.get("umpire_agreement"):
+            ua = q2["umpire_agreement"]
+            lines += ["### Agreement with coaches: Brownlow ranking versus M1\n",
+                      f"Same {ua['n_matches']} validation matches: Brownlow NDCG@5 "
+                      f"{_f(ua['umpires_ndcg5'])}; M1 {_f(ua['m1_ndcg5'])}; paired M1 minus "
+                      f"Brownlow difference {_f(ua['m1_minus_umpires'])}. This is descriptive "
+                      "agreement with coaches, not a test of whose judgement is correct.\n"]
         cvu = results / "val" / "q2_coaches_vs_umpires.csv"
         if cvu.exists():
             t = pd.read_csv(cvu)
             lines += ["### Coaches vs umpires: features where the 95% CIs do not overlap\n",
+                      "Shared scaling and the selected M1 specification are used on all included "
+                      "development seasons. Non-overlap is a descriptive criterion, not a "
+                      "Holm-corrected test. Logit coefficients for different ordinal targets "
+                      "are relative to each target's residual scale.\n",
                       t[t["differs"]].round(3).to_markdown(index=False) if t["differs"].any() else "None.", ""]
     q3 = results / "val" / "q3_separation.csv"
     if q3.exists():
         t = pd.read_csv(q3)
         lines += ["## Q3 trends: features whose block CIs clearly separate\n",
+                  "The selected M1 specification is fitted separately in each season block, with "
+                  "one shared development-data scaler. The protocol flags any pair of "
+                  "non-overlapping block intervals; the Holm p-values below test first versus last "
+                  "blocks across features. These are different criteria. Coefficient shifts are "
+                  "associations on a logit scale and may reflect changing residual noise, correlated "
+                  "statistics, rules or model fit, rather than changed coaching preferences.\n",
                   t[t["any_pair_ci_nonoverlap"]].round(3).to_markdown(index=False)
                   if t["any_pair_ci_nonoverlap"].any() else "No feature clearly separates.", ""]
+        highlighted = t[t["highlight"]].copy()
+        if len(highlighted):
+            highlighted["p_holm_first_last"] = highlighted["p_holm_first_last"].map(_p)
+            cols = ["feature", "first_block", "last_block", "first_coef", "last_coef",
+                    "diff", "diff_lo", "diff_hi", "p_holm_first_last"]
+            lines += ["### Pre-named features of interest: first and last block estimates\n",
+                      "Estimates are shown for all five pre-named features. A change is claimed "
+                      "only under the non-overlap criterion above. Holm correction covers all "
+                      "model features, not only these rows.\n",
+                      highlighted[cols].round(3).to_markdown(index=False), ""]
+    if val is not None:
+        test_status = ("The 2026 test remains unopened until authorized. " if test is None
+                       else "Held-out results, when present, are reported separately above. ")
+        lines += ["## Limits of this validation evidence\n",
+                  "M1/M2 were selected on these same validation seasons; their reported performance "
+                  "and conditional confidence intervals omit model-selection uncertainty. They "
+                  "are not held-out estimates. " + test_status +
+                  "Coaches' votes are subjective, public box scores omit tracking and off-ball work, "
+                  "and the role proxy can let the model absorb an omitted-work premium. Failure to "
+                  "support H2a therefore does not show that no blind spot exists. The delta = 0.01 "
+                  "decision threshold is a research convention, not demonstrated usefulness to a coach. "
+                  "2020 had shortened quarters; statistical scaling cannot remove all season "
+                  "differences. No causal or adoption claim follows from these results.\n"]
     return "\n".join(lines), "\n".join(block)
 
 

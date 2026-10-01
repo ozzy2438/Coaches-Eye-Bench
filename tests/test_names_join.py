@@ -22,6 +22,9 @@ def test_normalisation_cases():
 def test_team_names_and_unknown_raises():
     assert canon_team("Greater Western Sydney") == canon_team("GWS Giants") == "GWS"
     assert canon_team("Footscray") == canon_team("Western Bulldogs")
+    assert canon_team("WB") == "Western Bulldogs"
+    assert canon_team("ADEL") == "Adelaide"
+    assert canon_team("GCFC") == "Gold Coast"
     with pytest.raises(ValueError):
         canon_team("Fitzroy Lions B")
 
@@ -85,6 +88,15 @@ def test_ambiguous_name_resolved_only_with_club_hint(P):
     hint = _join(pl, [("Josh Kennedy (Carlton)", 15), (H(5), 15)], P)
     assert hint.excluded.empty
     assert hint.player_match.query("player_id == 2")["votes"].iloc[0] == 15
+    # AFLCA abbreviates clubs, including the two Bailey Williams' teams in the live pilot.
+    clubs = {"Collingwood": "Western Bulldogs", "Carlton": "West Coast"}
+    players = [(clubs[t], f, s, i) for t, f, s, i in pl]
+    st, _ = ingest_stats(stats_rows(players, home="Western Bulldogs", away="West Coast"))
+    vo, _ = ingest_votes(votes_rows([("Josh Kennedy (WB)", 15), (H(5), 15)],
+                                   home="Western Bulldogs", away="West Coast"))
+    short_hint = join_votes(st, vo, P)
+    assert short_hint.excluded.empty
+    assert short_hint.player_match.query("player_id == 1")["votes"].iloc[0] == 15
 
 
 def test_exclusions_for_bad_totals_and_missing_votes(P):
@@ -110,6 +122,13 @@ def test_round_label_mismatch_falls_back_and_duplicate_pages_dropped(P):
     r2 = join_votes(st, both, P)  # same page served under two round labels
     assert r2.report["duplicate_vote_page_rows_dropped"] == 7 and r2.excluded.empty
     assert r2.player_match["votes"].sum() == 30
+    flipped, _ = ingest_votes(votes_rows(_entries_30(), rnd=5, home="Carlton", away="Collingwood"))
+    reverse = join_votes(st, flipped, P)  # opposite source orders at a neutral venue
+    assert reverse.excluded.empty and reverse.report["home_away_reversal_rows"] == 7
+    assert set(reverse.player_match["match_id"]) == set(st["match_id"])
+    wrong_round = join_votes(st, flipped.assign(round=6), P)
+    assert wrong_round.report["home_away_reversal_rows"] == 0
+    assert wrong_round.unmatched["reason"].eq("match_not_in_stats").all()
 
 
 def test_finals_rows_dropped_at_ingest():
