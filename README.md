@@ -26,6 +26,10 @@ make setup && make data && make smoke
 
 The full study, in order: `make train` (selection on validation only) → `make eval-val` → `make eval-test` (single guarded run on 2026) → `make report`. `make test` runs the 66 tests; `make smoke-real` is a plumbing check on two real dev seasons.
 
+## Continuous integration
+
+The workflow (lint, all tests, `make smoke` on the synthetic fixture, base-R tests of the fetch helpers) lives at [`ci/github-actions-ci.yml`](ci/github-actions-ci.yml). It is kept outside `.github/workflows/` because the token used to build this repo had no `workflows` permission; run `make install-ci`, commit `.github/workflows/ci.yml` and push to switch it on. CI never touches the live data sources. It has **not yet run on GitHub** (see DECISIONS.md); the same three commands were run locally from a clean clone.
+
 ## Protocol and integrity
 
 [`protocol.md`](protocol.md) was written, committed and tagged **`protocol-frozen`** *before any implementation existed and before any 2026 data was loaded*. Its parameters live in one machine-readable block that the code reads — there is no second copy to drift.
