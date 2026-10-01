@@ -9,7 +9,7 @@ import pandas as pd
 from .io_utils import read_json, sha256_file, utc_now, write_json
 
 _SOURCES = {
-    "afltables_player_stats": "AFL Tables via fitzRoy::fetch_player_stats_afltables",
+    "afltables_player_stats": "AFL Tables season-scoped pages via fitzRoy::scrape_afltables_match",
     "aflca_coaches_votes": "AFLCA Champion Player of the Year leaderboard via fitzRoy (scrape_coaches_votes)",
     "squiggle_games": "Squiggle API https://api.squiggle.com.au (games)",
 }

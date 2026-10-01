@@ -73,7 +73,7 @@ def all_seasons(P: SimpleNamespace, include_test: bool = False) -> list[int]:
 
 
 class Paths:
-    """Where things live. Override with CEB_DATA_DIR / CEB_RESULTS_DIR."""
+    """Override with CEB_DATA_DIR / CEB_RAW_DIR / CEB_RESULTS_DIR (pilot shares raw cache)."""
 
     def __init__(self, data: Path | None = None, results: Path | None = None):
         self.data = Path(data or os.environ.get("CEB_DATA_DIR", ROOT / "data"))
@@ -81,7 +81,7 @@ class Paths:
 
     @property
     def raw(self) -> Path:
-        return self.data / "raw"
+        return Path(os.environ.get("CEB_RAW_DIR", self.data / "raw"))
 
     @property
     def processed(self) -> Path:

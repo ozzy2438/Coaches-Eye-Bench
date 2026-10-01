@@ -8,4 +8,4 @@ Append-only. A re-freeze (moving the `protocol-frozen` tag) is allowed only befo
 
 ## Note on the pushed tag
 
-The tag was created in the build session on `4bf7582` but **could not be pushed** (the sandbox's git proxy returned HTTP 403 for tag refs). Commit `4bf7582` is the first commit after `main` on branch `claude/coaches-eye-bench-build` and the only one that has ever touched `protocol.md`. On any clone run `make restore-tag` (verifies `protocol.md` is unchanged since that commit, then re-creates the annotated tag), then `git push origin protocol-frozen`. `make eval-test` refuses until the tag exists.
+The original build session could not push the tag. On 2026-10-01 the readiness review restored and successfully published it on the same original commit `4bf7582`. The protocol was not changed or re-frozen. Fetch it on an existing clone with `git fetch origin tag protocol-frozen`; a fresh full clone receives it automatically. The restore helper remains available for historical/offline clones.

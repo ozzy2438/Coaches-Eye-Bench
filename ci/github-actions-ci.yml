@@ -1,4 +1,6 @@
 name: ci
+permissions:
+  contents: read
 on:
   push:
   pull_request:
@@ -10,10 +12,13 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
       - run: uv sync --frozen
+      - run: make check-protocol
       - run: make lint
       - run: make test
       - run: make smoke

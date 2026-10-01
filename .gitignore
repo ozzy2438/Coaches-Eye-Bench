@@ -1,4 +1,5 @@
 .venv/
+.r-library/
 __pycache__/
 *.pyc
 .pytest_cache/
@@ -8,5 +9,7 @@ __pycache__/
 data/
 # smoke / post-hoc / local-only outputs
 results/smoke/
+results/smoke_real/
+results/pilot/
 results/post_hoc/
 .env

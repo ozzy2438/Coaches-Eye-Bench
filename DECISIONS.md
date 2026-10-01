@@ -64,4 +64,18 @@ H2a was "supported" in none of them. Read a real-data "not supported" as *this l
 
 ## F. What to review before the first `make data-test`
 
-Everything in table C, the Q2 lens caveat in E, and whether the owner wants independent position labels (e.g. from a player-details source) added *before* the freeze is relied on.
+Everything in table C and the Q2 lens caveat in E. Independent position labels would improve role validity but cannot by themselves prove missing defensive work.
+
+## G. Readiness review before any real-data run (2026-10-01)
+
+The owner requested implementation of the readiness review without new test files.
+The original protocol and its numerical choices remain unchanged; no 2026 data was fetched.
+
+* **Test isolation:** fitzRoy 1.8.0 source inspection showed the exported statistics fetch loads an all-seasons parquet before filtering. Replaced that route with explicitly dated season pages parsed by pinned fitzRoy helpers. This enforces the original protocol rather than changing the design. Live parsing remains an integration check, not a claimed success.
+* **Fetch corrections:** include numeric Round 0; keep the fitzRoy version separate from vote tables; retain successful round/page caches after a failure; require the full test guard for direct R fetch and CLI test builds.
+* **Pilot:** `make data-pilot` limits ingestion to 2024–2025. It shares raw caches but isolates processed data, manifests, reduced smoke outputs and choices under `data/pilot` / `results/pilot`. The final study still trains on the protocol's training seasons. Quality-gate failures retain audit CSVs.
+* **Metric naming:** display `recall5` as Normalized Recall@5, explicitly defining the denominator `min(5, receivers)`. Calculation unchanged.
+* **Decision threshold:** retain δ = 0.01 as a research convention. The earlier claim that a coach would not notice a smaller difference was unsupported. Do not equate the statistical rule with demonstrated usability or adoption value. A lower confidence bound below δ is insufficient evidence that the gain exceeds δ; it does not imply the estimated gain is below δ.
+* **Q2 interpretation:** retain the pre-specified H2a calculation, but do not interpret residuals as proof of unrecorded work or non-support as proof of no blind spot. Other role comparisons remain exploratory. Signed mean residuals grouped by match closeness are structurally zero after the per-match sum-to-30 normalization; do not interpret that lens as an accuracy comparison. A different estimand would require a documented protocol amendment before test access.
+* **R reproducibility:** `make setup-r` installs the required fitzRoy version locally; the manifest records every installed R package version. A complete transitive R lockfile is still pending successful dependency installation. Python uses `uv sync --frozen`.
+* **Environment evidence:** the existing 66 Python tests passed before these changes. R 4.5.0 was installed locally from Debian's signed package index; base-R helper checks passed. CRAN installation is blocked by the cloud proxy. The original `protocol-frozen` tag was successfully published to GitHub at `4bf7582` during this review.

@@ -62,13 +62,24 @@ def _write(paths: Paths, res: JoinResult, qa: dict, P: SimpleNamespace, suffix: 
     write_json(out / f"qa_report{suffix}.json", qa)
 
 
-def build(paths: Paths, P: SimpleNamespace, test: bool = False) -> dict:
+def build(paths: Paths, P: SimpleNamespace, test: bool = False,
+          seasons: list[int] | None = None) -> dict:
     """``test=False``: Train+Validation seasons only. ``test=True``: the locked season (gated upstream)."""
-    seasons = [P.splits.test_season] if test else all_seasons(P)
+    if test:
+        if seasons is not None:
+            raise ValueError("custom seasons are for development builds only")
+        seasons = [P.splits.test_season]
+    else:
+        seasons = all_seasons(P) if seasons is None else sorted(set(seasons))
+        if not seasons or not set(seasons) <= set(all_seasons(P)):
+            raise ValueError("build seasons must be a nonempty subset of the development seasons")
     stats_raw, votes_raw = load_raw(paths.raw, seasons)
-    res, qa, _ = join_and_check(stats_raw, votes_raw, P, include_test=test)
+    res, qa, _ = join_and_check(stats_raw, votes_raw, P, include_test=test, enforce_rate=False)
     suffix = "_test" if test else ""
     _write(paths, res, qa, P, suffix)
+    # Keep the audit files even when the quality gate stops a real-data pilot.
+    check_join_rate(res.report, P)
+    assert_qa(qa)
     if not test:
         write_tables(paths.db, {"player_match": res.player_match, "excluded_matches": res.excluded,
                                 "unmatched_votes": res.unmatched})
@@ -77,10 +88,9 @@ def build(paths: Paths, P: SimpleNamespace, test: bool = False) -> dict:
         if sql["matches_vote_total_not_expected"] or sql["duplicate_player_matches"]:
             raise RuntimeError(f"SQL re-check disagrees with the join: {sql}")
         if paths.raw.exists():
-            m = build_manifest(paths.raw, paths.manifest, seasons=all_seasons(P))
+            m = build_manifest(paths.raw, paths.manifest, seasons=seasons)
             write_json(paths.results / "data_manifest.json", m)
     else:
         m = build_manifest(paths.raw, paths.data / "manifest_test.json", seasons=[P.splits.test_season])
         write_json(paths.results / "data_manifest_test.json", m)
-    assert_qa(qa)
     return {"join": res.report, "qa": qa}

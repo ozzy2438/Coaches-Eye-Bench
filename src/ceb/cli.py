@@ -20,7 +20,9 @@ def _need(path: Path, hint: str) -> Path:
 
 
 def cmd_build(a, P, paths):
-    out = pipeline.build(paths, P, test=a.test)
+    if a.test:
+        guard.check_test_allowed(paths.results)
+    out = pipeline.build(paths, P, test=a.test, seasons=a.seasons)
     o = out["join"]["overall"]
     print(f"join rate rows {o['match_rate_rows']:.4f}, mass {o['match_rate_mass']:.4f}; "
           f"{out['join']['excluded_matches']} matches excluded; QA ok={out['qa']['ok']}")
@@ -116,7 +118,10 @@ def cmd_smoke_real(a, P, paths):
 
 
 def cmd_guard(a, P, paths):
-    guard.check_protocol_frozen()
+    if a.test:
+        guard.check_test_allowed(paths.results)
+    else:
+        guard.check_protocol_frozen()
     print(f"ok: tag {guard.TAG} exists and protocol.md matches it")
 
 
@@ -133,7 +138,9 @@ def cmd_squiggle(a, P, paths):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="ceb", description=__doc__)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    b = sub.add_parser("build"); b.add_argument("--test", action="store_true"); b.set_defaults(f=cmd_build)
+    b = sub.add_parser("build"); b.add_argument("--test", action="store_true")
+    b.add_argument("--seasons", type=int, nargs="+", help="development seasons only (e.g. 2024 2025)")
+    b.set_defaults(f=cmd_build)
     sub.add_parser("train").set_defaults(f=cmd_train)
     sub.add_parser("eval-val").set_defaults(f=cmd_eval_val)
     sub.add_parser("eval-test").set_defaults(f=cmd_eval_test)
@@ -145,7 +152,7 @@ def main(argv=None):
         c.add_argument(k, required=True)
     c.add_argument("--season", type=int, required=True); c.add_argument("--round", type=int, required=True)
     c.add_argument("--synthetic", action="store_true"); c.set_defaults(f=cmd_card)
-    sub.add_parser("guard").set_defaults(f=cmd_guard)
+    g = sub.add_parser("guard"); g.add_argument("--test", action="store_true"); g.set_defaults(f=cmd_guard)
     sub.add_parser("manifest").set_defaults(f=cmd_manifest)
     se = sub.add_parser("seasons"); se.add_argument("which", choices=["dev", "test"]); se.set_defaults(f=cmd_seasons)
     sub.add_parser("smoke-real").set_defaults(f=cmd_smoke_real)
@@ -154,7 +161,7 @@ def main(argv=None):
     P, paths = load_params(), Paths()
     try:
         a.f(a, P, paths.ensure() if a.cmd not in ("guard", "card", "seasons") else paths)
-    except (guard.GuardError, analysis.StopAndReport, FileNotFoundError) as e:
+    except (guard.GuardError, analysis.StopAndReport, FileNotFoundError, ValueError) as e:
         sys.exit(f"STOP: {e}")
 
 

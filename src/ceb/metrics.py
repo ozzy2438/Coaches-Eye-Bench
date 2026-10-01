@@ -52,7 +52,7 @@ def top1_hit(votes: np.ndarray, scores: np.ndarray) -> float:
 
 
 def recall_at_k(votes: np.ndarray, scores: np.ndarray, k: int = 5) -> float:
-    """Expected number of vote-receivers in the top k, over min(k, number of receivers)."""
+    """Normalized recall: expected hits / min(k, receivers), not conventional hits / receivers."""
     rec = (votes > 0).astype(float)
     n_rec = rec.sum()
     if n_rec == 0:
