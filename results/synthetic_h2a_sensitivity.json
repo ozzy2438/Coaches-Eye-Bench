@@ -1,0 +1,54 @@
+{
+  "synthetic": true,
+  "note": "fictional data; shows sensitivity of the H2a lens, not AFL facts",
+  "rows": [
+    {
+      "scenario": "null: no planted effects",
+      "lens": "M1 residual (protocol)",
+      "mean_resid": -0.017,
+      "lo": -0.039,
+      "hi": 0.007,
+      "supported": false
+    },
+    {
+      "scenario": "null: no planted effects",
+      "lens": "M2 residual (post-hoc)",
+      "mean_resid": -0.018,
+      "lo": -0.04,
+      "hi": 0.006,
+      "supported": false
+    },
+    {
+      "scenario": "defender premium 0.8 (comparable to the goals weight), otherwise linear",
+      "lens": "M1 residual (protocol)",
+      "mean_resid": 0.033,
+      "lo": -0.0,
+      "hi": 0.067,
+      "supported": false
+    },
+    {
+      "scenario": "defender premium 0.8 (comparable to the goals weight), otherwise linear",
+      "lens": "M2 residual (post-hoc)",
+      "mean_resid": 0.025,
+      "lo": -0.012,
+      "hi": 0.063,
+      "supported": false
+    },
+    {
+      "scenario": "defender premium 2.0 + planted non-linearity",
+      "lens": "M1 residual (protocol)",
+      "mean_resid": 0.005,
+      "lo": -0.025,
+      "hi": 0.034,
+      "supported": false
+    },
+    {
+      "scenario": "defender premium 2.0 + planted non-linearity",
+      "lens": "M2 residual (post-hoc)",
+      "mean_resid": 0.007,
+      "lo": -0.021,
+      "hi": 0.035,
+      "supported": false
+    }
+  ]
+}
