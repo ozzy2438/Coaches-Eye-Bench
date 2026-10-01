@@ -15,6 +15,7 @@ dependencies = [
   "duckdb>=1.0",
   "pyarrow>=15",
   "matplotlib>=3.8",
+  "tabulate>=0.10.0",
 ]
 
 [project.optional-dependencies]
@@ -43,3 +44,4 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "E702", "E731", "E741"]

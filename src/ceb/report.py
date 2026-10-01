@@ -1,0 +1,173 @@
+"""Generate RESULTS.md and the README results block from results/*.json. Never hand-edited."""
+
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+import pandas as pd
+
+from .evaluate import COMPARISONS, MODELS
+from .io_utils import read_json
+
+START, END = "<!-- RESULTS:START -->", "<!-- RESULTS:END -->"
+METRIC_NAMES = {"ndcg5": "NDCG@5", "top1": "Top-1 hit", "recall5": "Recall@5", "spearman": "Spearman"}
+MODEL_NAMES = {"B0": "B0 Disposals", "B1": "B1 Fantasy points", "M1": "M1 Interpretable",
+               "M2": "M2 LightGBM LambdaRank"}
+
+
+def _f(d: dict, nd: int = 3) -> str:
+    return f"{d['point']:.{nd}f} [{d['lo']:.{nd}f}, {d['hi']:.{nd}f}]"
+
+
+def _p(p: float) -> str:
+    return "<0.001" if p < 0.001 else f"{p:.3f}"
+
+
+def metrics_table(res: dict) -> str:
+    rows = ["| Model | " + " | ".join(METRIC_NAMES.values()) + " | ECE P(any votes) |",
+            "|---|" + "---|" * (len(METRIC_NAMES) + 1)]
+    for m in MODELS:
+        ece = _f(res["calibration"][m]) if m in res["calibration"] else "n/a"
+        rows.append(f"| {MODEL_NAMES[m]} | " + " | ".join(_f(res["metrics"][m][k]) for k in METRIC_NAMES)
+                    + f" | {ece} |")
+    return "\n".join(rows)
+
+
+def comparison_table(res: dict) -> str:
+    rows = ["| Comparison (NDCG@5) | Difference [95% CI] | Relative gain [95% CI] | Holm-adj. p |",
+            "|---|---|---|---|"]
+    for name in COMPARISONS:
+        c = res["comparisons"][name]["ndcg5"]
+        rows.append(f"| {name.replace('_vs_', ' vs ')} | {_f(c['diff'])} | "
+                    f"{c['relative']['point']:+.1%} [{c['relative']['lo']:+.1%}, {c['relative']['hi']:+.1%}] "
+                    f"| {_p(c['p_holm'])} |")
+    return "\n".join(rows)
+
+
+def findings(test: dict, q2: dict | None, split: str) -> list[str]:
+    c, m, dec = test["comparisons"], test["metrics"], test["decisions"]
+    out = []
+    r = c["M1_vs_B0"]["ndcg5"]
+    if dec["m1_beats_b0"]:
+        out.append(
+            f"**A transparent model agrees with coaches' votes {r['relative']['point']:.0%} more than disposals "
+            f"alone** (NDCG@5 {m['M1']['ndcg5']['point']:.3f} vs {m['B0']['ndcg5']['point']:.3f}; {split}; "
+            f"relative gain 95% CI {r['relative']['lo']:+.0%} to {r['relative']['hi']:+.0%}; Holm-adjusted p {_p(r['p_holm'])}).")
+    else:
+        out.append(
+            f"**The transparent model is not reliably better than disposals alone** (NDCG@5 "
+            f"{m['M1']['ndcg5']['point']:.3f} vs {m['B0']['ndcg5']['point']:.3f}; {split}; difference 95% CI "
+            f"[{r['diff']['lo']:+.3f}, {r['diff']['hi']:+.3f}]).")
+    r1 = c["M1_vs_B1"]["ndcg5"]
+    if dec["m1_equivalent_to_b1"]:
+        out[-1] += (f" It is practically equivalent to the fantasy-points formula (difference 95% CI "
+                    f"[{r1['diff']['lo']:+.3f}, {r1['diff']['hi']:+.3f}] inside ±{dec['delta']}).")
+    elif dec["m1_beats_b1"]:
+        out[-1] += (f" It also beats the fantasy-points formula by {r1['diff']['point']:+.3f} NDCG@5 "
+                    f"(95% CI [{r1['diff']['lo']:+.3f}, {r1['diff']['hi']:+.3f}]).")
+    r2 = c["M2_vs_M1"]["ndcg5"]
+    if dec["m2_justified"]:
+        out.append(
+            f"**The heavier model adds {r2['diff']['point']:+.3f} NDCG@5 over the interpretable one** "
+            f"(95% CI [{r2['diff']['lo']:+.3f}, {r2['diff']['hi']:+.3f}], above the {dec['delta']} threshold) - "
+            "enough to justify considering the loss of explainability.")
+    elif dec["m2_significantly_better"]:
+        out.append(
+            f"**The heavier model is statistically better but by less than the threshold:** "
+            f"{r2['diff']['point']:+.3f} NDCG@5 (95% CI [{r2['diff']['lo']:+.3f}, {r2['diff']['hi']:+.3f}]) "
+            f"vs the {dec['delta']} we required - not enough to justify losing explainability.")
+    else:
+        out.append(
+            f"**The heavier model added only {r2['diff']['point']:+.3f} NDCG@5 over the interpretable one** "
+            f"(95% CI [{r2['diff']['lo']:+.3f}, {r2['diff']['hi']:+.3f}]) - not enough to justify losing explainability.")
+    if q2 is None:
+        out.append("**Blind spots:** pending Q2 outputs.")
+    else:
+        h = q2.get("h2a_defender")
+        role = pd.DataFrame(q2["_role"]) if "_role" in q2 else None
+        txt = ""
+        if role is not None and len(role):
+            pos = role[(role["lo"] > 0)]
+            neg = role[(role["hi"] < 0)]
+            top = pos.sort_values("mean_resid", ascending=False)
+            txt = (f"public stats most under-rate **{top.iloc[0]['role']}** (mean +{top.iloc[0]['mean_resid']:.2f} votes "
+                   f"per player-match, 95% CI [{top.iloc[0]['lo']:+.2f}, {top.iloc[0]['hi']:+.2f}]); "
+                   if len(top) else "no role is clearly under-rated by the M1 residual lens; ")
+            if len(neg):
+                n0 = neg.sort_values("mean_resid").iloc[0]
+                txt += f"most over-rated: {n0['role']} ({n0['mean_resid']:+.2f}, CI [{n0['lo']:+.2f}, {n0['hi']:+.2f}]). "
+        if h is not None:
+            txt += (f"Pre-registered H2a (defenders under-rated): {'supported' if h['supported'] else 'not supported'} "
+                    f"(mean residual {h['mean_resid']:+.3f}, 95% CI [{h['lo']:+.3f}, {h['hi']:+.3f}]). ")
+        out.append("**Blind spots (validation seasons):** " + txt +
+                   "The role lens is a descriptive proxy and cannot isolate unrecorded work (see Limitations).")
+    return out
+
+
+def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
+    """Returns (RESULTS.md text, README block text)."""
+    results = Path(results)
+    val_p, test_p = results / "val" / "metrics.json", results / "test" / "metrics.json"
+    q2_p = results / "val" / "q2_summary.json"
+    lines = ["# Results (generated by `make report`; do not edit by hand)\n"]
+    block = []
+    val = read_json(val_p) if val_p.exists() else None
+    test = read_json(test_p) if test_p.exists() else None
+    synthetic = any(d and d.get("stamp", {}).get("synthetic") for d in (val, test))
+    if synthetic:
+        lines.append("> **SYNTHETIC FIXTURE OUTPUT - NOT A RESULT.** Produced by `make smoke` to test the machinery.\n")
+    q2 = read_json(q2_p) if q2_p.exists() else None
+    if q2 is not None and (results / "val" / "q2_role.csv").exists():
+        q2["_role"] = pd.read_csv(results / "val" / "q2_role.csv").to_dict("records")
+    if test is None and not synthetic:
+        status = ("**Status: real-data run pending.** No held-out result has been produced yet: the pipeline is "
+                  "implemented and verified on synthetic data, but `make data` has not been run against the live sources. "
+                  "No number in this repository is a finding about the AFL until `results/test/metrics.json` exists "
+                  "(generated by `make eval-test`).")
+        block.append(status)
+        lines.append(status + "\n")
+    if val is not None:
+        lines += ["## Validation seasons (selection happened here, so M1/M2 are mildly optimistic)\n",
+                  metrics_table(val), "", comparison_table(val), ""]
+    if test is not None:
+        split = f"{test.get('test_season', 'test')} held-out season"
+        lines += [f"## Test: {split} (single run, frozen protocol)\n", metrics_table(test), "",
+                  comparison_table(test), ""]
+        for f in findings(test, q2, split):
+            block.append(f"- {f}")
+    if q2 is not None:
+        lines.append("## Q2 blind spots (validation seasons)\n")
+        rc = results / "val" / "q2_role.csv"
+        if rc.exists():
+            lines += [pd.read_csv(rc).round(3).to_markdown(index=False), ""]
+        ph = results / "val" / "q2_posthoc_m2_role.csv"
+        if ph.exists():
+            lines += ["### Post-hoc: residuals relative to M2 (not in protocol)\n",
+                      pd.read_csv(ph).round(3).to_markdown(index=False), ""]
+        cvu = results / "val" / "q2_coaches_vs_umpires.csv"
+        if cvu.exists():
+            t = pd.read_csv(cvu)
+            lines += ["### Coaches vs umpires: features where the 95% CIs do not overlap\n",
+                      t[t["differs"]].round(3).to_markdown(index=False) if t["differs"].any() else "None.", ""]
+    q3 = results / "val" / "q3_separation.csv"
+    if q3.exists():
+        t = pd.read_csv(q3)
+        lines += ["## Q3 trends: features whose block CIs clearly separate\n",
+                  t[t["any_pair_ci_nonoverlap"]].round(3).to_markdown(index=False)
+                  if t["any_pair_ci_nonoverlap"].any() else "No feature clearly separates.", ""]
+    return "\n".join(lines), "\n".join(block)
+
+
+def write_report(results: Path, readme: Path | None) -> Path:
+    results = Path(results)
+    md, block = build_results(results)
+    out = results / "RESULTS.md"
+    out.write_text(md + "\n")
+    if readme is not None and Path(readme).exists():
+        t = Path(readme).read_text()
+        if START not in t or END not in t:
+            raise ValueError(f"{readme} lacks the {START} / {END} markers")
+        t = re.sub(re.escape(START) + r".*?" + re.escape(END), START + "\n" + block + "\n" + END, t, flags=re.S)
+        Path(readme).write_text(t)
+    return out
