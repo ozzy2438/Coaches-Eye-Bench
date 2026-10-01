@@ -1,0 +1,139 @@
+{
+  "kind": "held_out_data_quality",
+  "test_season": 2026,
+  "join": {
+    "overall": {
+      "vote_rows": 1346,
+      "matched_rows": 1345,
+      "match_rate_rows": 0.9992570579494799,
+      "vote_mass": 6210,
+      "matched_mass": 6200,
+      "match_rate_mass": 0.998389694041868,
+      "tiers": {
+        "exact": 1314,
+        "initial": 31
+      }
+    },
+    "per_season": {
+      "2026": {
+        "vote_rows": 1346,
+        "matched_rows": 1345,
+        "match_rate_rows": 0.9992570579494799,
+        "vote_mass": 6210,
+        "matched_mass": 6200,
+        "match_rate_mass": 0.998389694041868,
+        "tiers": {
+          "exact": 1314,
+          "initial": 31
+        },
+        "stats_matches": 207,
+        "included_matches": 206,
+        "excluded_by_reason": {
+          "unmatched_vote_rows": 1
+        }
+      }
+    },
+    "duplicate_vote_page_rows_dropped": 0,
+    "round_mismatch_rows": 0,
+    "home_away_reversal_rows": 0,
+    "excluded_matches": 1,
+    "ingest": {
+      "stats": {
+        "rows_in": 9522,
+        "non_home_away_rows_dropped": 0
+      },
+      "votes": {
+        "rows_in": 1346,
+        "non_numeric_vote_rows_dropped": 0
+      }
+    }
+  },
+  "qa": {
+    "ok": true,
+    "checks": {
+      "votes_per_match_total": {
+        "ok": true,
+        "detail": "0 matches != 30"
+      },
+      "no_duplicate_player_matches": {
+        "ok": true,
+        "detail": "0 duplicates"
+      },
+      "stats_non_negative": {
+        "ok": true,
+        "detail": "0 rows with negative counts"
+      },
+      "stats_within_sane_maxima": {
+        "ok": true,
+        "detail": "rows above sanity maxima: {}"
+      },
+      "time_on_ground_0_100": {
+        "ok": true,
+        "detail": "TOG outside [0,100]"
+      },
+      "disposals_equal_kicks_plus_handballs": {
+        "ok": true,
+        "detail": "0 rows where source Disposals differ"
+      },
+      "players_per_team_match_18_26": {
+        "ok": true,
+        "detail": "0 team-matches outside 18-26"
+      },
+      "vote_receivers_per_match_5_10": {
+        "ok": true,
+        "detail": "0 matches outside 5-10"
+      },
+      "context_margins_antisymmetric": {
+        "ok": true,
+        "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+      },
+      "feature_columns_leak_free": {
+        "ok": true,
+        "detail": ""
+      },
+      "brownlow_total_6_share_ge_95pct": {
+        "ok": true,
+        "detail": "1.000 of matches total 6"
+      }
+    }
+  },
+  "exclusion_note": "One Round 9 Sydney\u2013Melbourne match was excluded for an unmatched vote row: the AFLCA player name includes a junior suffix absent from the AFL Tables surname, so neither frozen exact nor initial-name keys match. No test-informed alias or join change was made. Exclusion may introduce selection bias; inference covers the 206 retained matches.",
+  "sql_invariants": {
+    "matches": 206,
+    "player_matches": 9476,
+    "matches_vote_total_not_expected": 0,
+    "duplicate_player_matches": 0,
+    "negative_stat_rows": 0
+  },
+  "rounds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25
+  ],
+  "date_range": [
+    "2026-03-05",
+    "2026-08-23"
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "created_utc": "2026-10-01T10:25:06Z",
+  "kind": "development_validation_run",
+  "synthetic": false,
+  "branch": "real-data-pilot",
+  "model_source_commit": "46f29934981a666988d47366b231298003edf69d",
+  "calculation_source_unchanged_since_training": true,
+  "command_exit_codes": {
+    "data": 0,
+    "train": 0,
+    "eval-val": 0,
+    "report": 0
+  },
+  "effective_start": 2012,
+  "train_seasons": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "validation_seasons": [
+    2024,
+    2025
+  ],
+  "n_train_matches": 2338,
+  "n_validation_matches": 414,
+  "n_validation_player_matches": 19044,
+  "candidate_counts": {
+    "m1": 8,
+    "m2": 120
+  },
+  "choices": {
+    "m1": {
+      "view": "global",
+      "alpha": 0.01
+    },
+    "m2": {
+      "num_leaves": 31,
+      "min_data_in_leaf": 50,
+      "rounds": 750,
+      "clf_rounds": 600
+    }
+  },
+  "protocol_sha256": "e910f956435a4455f84bded4d99f3f3ad1ca6e369ea127045423d5862b0d40af",
+  "python_lock_sha256": "6f633f1c9d3e7cb0a773baa3526866767ab2e0c99d6d6339342a4f3c36bb158e",
+  "r_lock_sha256": "03039535cfa08295e181934b90a03a7b1406e2dfca0189e4e772b5054ed7a5b5",
+  "r_packages_locked": 49,
+  "empty_r_library_restore_exit": 0,
+  "data_manifest_sha256": "cf9da4f4c5c6df94181bb392bc15bd550cc07ae4617dcbd836fdd0259bc45072",
+  "pilot_choices_sha256": "cb9d3301d8d460557eb11e9e201d4bce7b46a6bada6b29079850c974c2376031",
+  "test_season_unopened": true,
+  "inference": {
+    "bootstrap_B": 2000,
+    "permutation_n": 20000,
+    "alpha": 0.05,
+    "sesoi_ndcg5": 0.01
+  },
+  "q2_bootstrap_B": 2000,
+  "coefficient_bootstrap_B": 500,
+  "q3_blocks": [
+    "2012-2014",
+    "2015-2017",
+    "2018-2020",
+    "2021-2023",
+    "2024-2025"
+  ],
+  "q3_interval_separations": 12,
+  "q3_holm_first_last_significant": 6,
+  "q3_named_features_holm_first_last_significant": 0,
+  "checks": {
+    "existing_data_tests_passed": 33,
+    "existing_report_tests_passed": 5,
+    "base_r_fetch_helpers": "passed",
+    "lint": "passed",
+    "protocol_guard": "passed",
+    "new_test_files": 0
+  },
+  "limitations": "Model selection used the validation seasons; match-bootstrap intervals condition on the fitted selected model and omit selection uncertainty. No held-out or causal finding.",
+  "artifact_sha256": {
+    "results/val/metrics.json": "fb20ea64f8ba2a0891f438a482dac00ca7603341840570792a4963b555b43e58",
+    "results/val/q2_posthoc_m2_role.csv": "97977d3498a09053f87c15797754775a2a0488cecfd654020cf88b851eb478d4",
+    "results/val/q2_posthoc_m2_team.csv": "3d623a0dbb97825340d1190c7135aa605fd8f1adc7aa13821f61336f1ff08a36",
+    "results/val/frozen_choices.json": "969c7d6c3a39b596d1695fe939c3b9118cf51f9e31e3fcb88cb766801357914c",
+    "results/val/q2_team.csv": "e13bdc4ed9c6a945699246f8e06c83c1a0c96a6264c7939f75e4c1de1cd17015",
+    "results/val/selection_m2.csv": "d7e167c51a9b38fbe4169ff79482144812a921ba4483fa80fc171942887cfa68",
+    "results/val/q2_closeness.csv": "cec201d038715c3d8a07352b7e2e7e2ab18ef1d5c60ed914bf74e33ff66c3195",
+    "results/val/q2_posthoc_m2_closeness.csv": "5bf388d2ec45121e15456e512a07379ac47e92581e9d6c93059838358b9cdc7c",
+    "results/val/selection_m1.csv": "af3665decfef2c4d25ebbf3b9affcb02db3d404980d7d77dd95101d194533bda",
+    "results/val/q3_separation.csv": "dda8b3c2f2d316b17196258de4b1ee58dcd21f666a1f2143a1eeb72562e81df8",
+    "results/val/q2_summary.json": "3aefdf9eeef92c734e7a94169f6a1695ce2c87f9284bd7f19f167da82d94f57f",
+    "results/val/q2_coaches_vs_umpires.csv": "01218b1d9049a20dc0332252468c03d9b8b998976f1b3220b47fc8ade42454d7",
+    "results/val/split.json": "e0b80a496427cd9cd9ed7dd4753bc1b12051a91ac271f88aca2084d1c4cadd5d",
+    "results/val/q2_role.csv": "f41446296ff5197a96d5d525e166d7f664a284ab4de75e4531f4b89a633287f8",
+    "results/val/per_match.csv": "759078abf8a53d54d54a0336eb51c32b668e208e3ad1fc121d288a30beeb71b7",
+    "results/val/q3_trends.csv": "00f4950fe385c1d1479e07218c4c508959c82add43fbf9e7f64bb95163f118f1",
+    "results/val/figures/ndcg5.png": "2fd53e78c95e9146f354ea91dca52689e3d98075c0b78109a04a670ef3b78346",
+    "results/val/figures/calibration.png": "c8164315f23c2bfff51c7704e3a78ce0c51774fb92fa6652f1af3089e7e1463d",
+    "results/val/figures/trends.png": "392da6f9a03c13a8950c506e6c765893899b8bcad34ff936194c101651b16ebe",
+    "results/val/figures/coaches_vs_umpires.png": "af5dc08c71bd8c1365c9ac613cd8efe2e07f9331fc613d20467095cbba7299c6",
+    "results/val/figures/blind_spots.png": "66353f9ff1da0701a89714c9dae74f0cacbfb319017345c0dd49f46f2cd9decc",
+    "results/RESULTS.md": "f4ccbe5bd870e5528a825601ff837a51c60fcf60a8a5ecf9dab9a6ca7efdb5a4",
+    "results/DEVELOPMENT_QA.md": "8f28f1fda09dc6e29183df76f07f9662f90ddd6d35791a4a3e00cfa181bc844c",
+    "results/development_qa.json": "2bfccb47484dcdd9119500074763f8ebe3c59810a9ca0c910e9644aa5893fcd2"
+  }
+}

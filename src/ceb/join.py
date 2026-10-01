@@ -43,9 +43,11 @@ def _crosswalk(stats: pd.DataFrame, votes: pd.DataFrame) -> tuple[pd.DataFrame, 
     """Attach ``match_id`` to vote rows.
 
     1. exact on (season, round, home, away);
-    2. fallback on (season, home, away) only when that ordered pair occurs once in the season's box
+    2. reversed home/away on the same season and round, only for a unique unordered fixture
+       (the sources use opposite orders for some neutral-site matches);
+    3. fallback on (season, home, away) only when that ordered pair occurs once in the season's box
        scores (AFLCA/AFL Tables round labels disagree) -- counted as ``round_mismatch``;
-    3. a match whose vote rows carry several round labels (the site served the same page under a
+    4. a match whose vote rows carry several round labels (the site served the same page under a
        wrong round) keeps the rows whose label equals the box-score round; the rest are dropped
        and counted as duplicate pages.
     """
@@ -54,6 +56,19 @@ def _crosswalk(stats: pd.DataFrame, votes: pd.DataFrame) -> tuple[pd.DataFrame, 
     v = votes.reset_index(drop=True)
     exact = v.merge(sm, on=[*pair, "round"], how="left")
     exact["stats_round"] = exact["round"].where(exact["match_id"].notna())
+    exact["home_away_reversed"] = False
+    todo = exact["match_id"].isna().to_numpy()
+    if todo.any():
+        fixtures = sm.assign(team_pair=[tuple(sorted((h, a))) for h, a in
+                                       zip(sm["home_team"], sm["away_team"], strict=True)])
+        unique = fixtures[~fixtures.duplicated(["season", "round", "team_pair"], keep=False)]
+        reverse = unique.drop(columns="team_pair").rename(
+            columns={"home_team": "away_team", "away_team": "home_team", "match_id": "match_id_rev"})
+        flipped = exact.loc[todo, list(v.columns)].merge(reverse, on=[*pair, "round"], how="left")
+        found = flipped["match_id_rev"].notna().to_numpy()
+        exact.loc[todo, "match_id"] = flipped["match_id_rev"].to_numpy()
+        exact.loc[todo, "stats_round"] = exact.loc[todo, "round"].where(found).to_numpy()
+        exact.loc[todo, "home_away_reversed"] = found
     todo = exact["match_id"].isna().to_numpy()
     if todo.any():
         once = sm.groupby(pair).filter(lambda g: len(g) == 1).rename(
@@ -197,6 +212,7 @@ def _report(vm: pd.DataFrame, excluded: pd.DataFrame, all_matches: pd.DataFrame,
         "per_season": per_season,
         "duplicate_vote_page_rows_dropped": dup_rows,
         "round_mismatch_rows": int((vm["stats_round"].notna() & (vm["round"] != vm["stats_round"])).sum()),
+        "home_away_reversal_rows": int(vm["home_away_reversed"].sum()),
         "excluded_matches": int(len(excluded)),
     }
 

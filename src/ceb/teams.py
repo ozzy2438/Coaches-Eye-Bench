@@ -28,6 +28,16 @@ _ALIASES = {
 }
 TEAMS = sorted(_ALIASES)
 _LOOKUP = {a: canon for canon, al in _ALIASES.items() for a in al}
+# Club hints printed beside AFLCA player names (verified in the 2012 source).
+_AFLCA_CLUB_HINTS = {
+    "ADEL": "Adelaide", "BL": "Brisbane Lions", "CARL": "Carlton",
+    "COLL": "Collingwood", "ESS": "Essendon", "FRE": "Fremantle",
+    "GCFC": "Gold Coast", "GEEL": "Geelong", "GWS": "GWS", "HAW": "Hawthorn",
+    "MELB": "Melbourne", "NMFC": "North Melbourne", "PORT": "Port Adelaide",
+    "RICH": "Richmond", "STK": "St Kilda", "SYD": "Sydney", "WB": "Western Bulldogs",
+    "WCE": "West Coast",
+}
+_LOOKUP.update({code.lower(): team for code, team in _AFLCA_CLUB_HINTS.items()})
 
 
 def canon_team(name: str) -> str:

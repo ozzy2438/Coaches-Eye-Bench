@@ -12,4 +12,5 @@ results/smoke/
 results/smoke_real/
 results/pilot/
 results/post_hoc/
+results/run_logs/
 .env

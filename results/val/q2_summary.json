@@ -1,0 +1,57 @@
+{
+  "h2a_defender": {
+    "mean_resid": 0.009166350386018747,
+    "lo": -0.018301217110336866,
+    "hi": 0.03674274847471752,
+    "supported": false
+  },
+  "posthoc_m2_h2a_defender": {
+    "mean_resid": -0.012975052324937114,
+    "lo": -0.03958069666168195,
+    "hi": 0.014084953674096023,
+    "supported": false
+  },
+  "note_posthoc": "POST-HOC: residuals relative to M2 (flexible) expected votes; not in protocol.md",
+  "role_mix": {
+    "Other": 0.3201533291325352,
+    "Defender": 0.2743121193026675,
+    "Forward": 0.17958412098298676,
+    "Midfielder": 0.13815374921235035,
+    "Ruck": 0.05025204788909893,
+    "Unclassified": 0.037544633480361266
+  },
+  "n_matches": 414,
+  "residual_sum_per_match_max_abs": 4.440892098500626e-15,
+  "umpire_agreement": {
+    "n_matches": 414,
+    "umpires_ndcg5": {
+      "point": 0.656025873766976,
+      "lo": 0.6377680896273744,
+      "hi": 0.6739580029324699,
+      "n": 414
+    },
+    "m1_ndcg5": {
+      "point": 0.8253481427897977,
+      "lo": 0.8118381318493836,
+      "hi": 0.8388988916957109,
+      "n": 414
+    },
+    "m1_minus_umpires": {
+      "point": 0.16932226902282174,
+      "lo": 0.15153996884999887,
+      "hi": 0.18797537274709342,
+      "n": 414
+    }
+  },
+  "coaches_vs_umpires_n_matches": 2752,
+  "stamp": {
+    "kind": "q2",
+    "synthetic": false,
+    "protocol_sha256": "e910f956435a4455f84bded4d99f3f3ad1ca6e369ea127045423d5862b0d40af",
+    "git": {
+      "commit": "46f29934981a666988d47366b231298003edf69d",
+      "dirty": true
+    },
+    "created_utc": "2026-10-01T10:10:40Z"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "choices": {
+    "m1": {
+      "view": "global",
+      "alpha": 0.01
+    },
+    "m2": {
+      "num_leaves": 31,
+      "min_data_in_leaf": 50,
+      "rounds": 750,
+      "clf_rounds": 600
+    }
+  },
+  "effective_start": 2012,
+  "kind": "frozen_choices",
+  "synthetic": false,
+  "protocol_sha256": "e910f956435a4455f84bded4d99f3f3ad1ca6e369ea127045423d5862b0d40af",
+  "git": {
+    "commit": "46f29934981a666988d47366b231298003edf69d",
+    "dirty": true
+  },
+  "created_utc": "2026-10-01T10:01:17Z"
+}

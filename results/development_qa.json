@@ -1,0 +1,1104 @@
+{
+  "created_utc": "2026-10-01T09:57:24Z",
+  "data_command_exit": 0,
+  "allowed_seasons": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "effective_start": 2012,
+  "start_notes": [],
+  "season_quality": [
+    {
+      "season": 2012,
+      "matched_vote_rows": 1325,
+      "vote_rows": 1325,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2013,
+      "matched_vote_rows": 1356,
+      "vote_rows": 1356,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2014,
+      "matched_vote_rows": 1315,
+      "vote_rows": 1315,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2015,
+      "matched_vote_rows": 1319,
+      "vote_rows": 1319,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5910,
+      "vote_mass": 5910,
+      "mass_join_rate": 1.0,
+      "stats_matches": 197,
+      "included_matches": 197,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2016,
+      "matched_vote_rows": 1296,
+      "vote_rows": 1296,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2017,
+      "matched_vote_rows": 1311,
+      "vote_rows": 1311,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2018,
+      "matched_vote_rows": 1305,
+      "vote_rows": 1311,
+      "row_join_rate": 0.9954233409610984,
+      "matched_vote_mass": 5910,
+      "vote_mass": 5940,
+      "mass_join_rate": 0.9949494949494949,
+      "stats_matches": 198,
+      "included_matches": 197,
+      "included_share": 0.9949494949494949,
+      "valid_vote_share": 0.9949494949494949,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {
+        "no_votes_for_match": 1
+      },
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2019,
+      "matched_vote_rows": 1300,
+      "vote_rows": 1300,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2020,
+      "matched_vote_rows": 1025,
+      "vote_rows": 1025,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 4590,
+      "vote_mass": 4590,
+      "mass_join_rate": 1.0,
+      "stats_matches": 153,
+      "included_matches": 153,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 0.9673202614379085,
+      "raw_incomplete_features": {
+        "bounces": 0.9673202614379085
+      },
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2021,
+      "matched_vote_rows": 1306,
+      "vote_rows": 1306,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 0.9949494949494949,
+      "raw_incomplete_features": {
+        "bounces": 0.9949494949494949
+      },
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2022,
+      "matched_vote_rows": 1303,
+      "vote_rows": 1303,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 5940,
+      "vote_mass": 5940,
+      "mass_join_rate": 1.0,
+      "stats_matches": 198,
+      "included_matches": 198,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2023,
+      "matched_vote_rows": 1361,
+      "vote_rows": 1361,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 6210,
+      "vote_mass": 6210,
+      "mass_join_rate": 1.0,
+      "stats_matches": 207,
+      "included_matches": 207,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2024,
+      "matched_vote_rows": 1342,
+      "vote_rows": 1342,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 6210,
+      "vote_mass": 6210,
+      "mass_join_rate": 1.0,
+      "stats_matches": 207,
+      "included_matches": 207,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    },
+    {
+      "season": 2025,
+      "matched_vote_rows": 1343,
+      "vote_rows": 1343,
+      "row_join_rate": 1.0,
+      "matched_vote_mass": 6210,
+      "vote_mass": 6210,
+      "mass_join_rate": 1.0,
+      "stats_matches": 207,
+      "included_matches": 207,
+      "included_share": 1.0,
+      "valid_vote_share": 1.0,
+      "processed_feature_coverage_min": 1.0,
+      "raw_feature_coverage_min": 1.0,
+      "raw_incomplete_features": {},
+      "excluded_by_reason": {},
+      "season_qa": {
+        "ok": true,
+        "checks": {
+          "votes_per_match_total": {
+            "ok": true,
+            "detail": "0 matches != 30"
+          },
+          "no_duplicate_player_matches": {
+            "ok": true,
+            "detail": "0 duplicates"
+          },
+          "stats_non_negative": {
+            "ok": true,
+            "detail": "0 rows with negative counts"
+          },
+          "stats_within_sane_maxima": {
+            "ok": true,
+            "detail": "rows above sanity maxima: {}"
+          },
+          "time_on_ground_0_100": {
+            "ok": true,
+            "detail": "TOG outside [0,100]"
+          },
+          "disposals_equal_kicks_plus_handballs": {
+            "ok": true,
+            "detail": "0 rows where source Disposals differ"
+          },
+          "players_per_team_match_18_26": {
+            "ok": true,
+            "detail": "0 team-matches outside 18-26"
+          },
+          "vote_receivers_per_match_5_10": {
+            "ok": true,
+            "detail": "0 matches outside 5-10"
+          },
+          "context_margins_antisymmetric": {
+            "ok": true,
+            "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+          },
+          "feature_columns_leak_free": {
+            "ok": true,
+            "detail": ""
+          },
+          "no_test_season_rows_in_dev_data": {
+            "ok": true,
+            "detail": "0 rows from 2026"
+          },
+          "brownlow_total_6_share_ge_95pct": {
+            "ok": true,
+            "detail": "1.000 of matches total 6"
+          }
+        }
+      }
+    }
+  ],
+  "join_overall": {
+    "vote_rows": 18213,
+    "matched_rows": 18207,
+    "match_rate_rows": 0.9996705649810574,
+    "vote_mass": 82590,
+    "matched_mass": 82560,
+    "match_rate_mass": 0.9996367598982928,
+    "tiers": {
+      "exact": 17806,
+      "initial": 389,
+      "alias": 12
+    }
+  },
+  "qa": {
+    "ok": true,
+    "checks": {
+      "votes_per_match_total": {
+        "ok": true,
+        "detail": "0 matches != 30"
+      },
+      "no_duplicate_player_matches": {
+        "ok": true,
+        "detail": "0 duplicates"
+      },
+      "stats_non_negative": {
+        "ok": true,
+        "detail": "0 rows with negative counts"
+      },
+      "stats_within_sane_maxima": {
+        "ok": true,
+        "detail": "rows above sanity maxima: {}"
+      },
+      "time_on_ground_0_100": {
+        "ok": true,
+        "detail": "TOG outside [0,100]"
+      },
+      "disposals_equal_kicks_plus_handballs": {
+        "ok": true,
+        "detail": "0 rows where source Disposals differ"
+      },
+      "players_per_team_match_18_26": {
+        "ok": true,
+        "detail": "0 team-matches outside 18-26"
+      },
+      "vote_receivers_per_match_5_10": {
+        "ok": true,
+        "detail": "0 matches outside 5-10"
+      },
+      "context_margins_antisymmetric": {
+        "ok": true,
+        "detail": "0 team-matches/matches whose margins are inconsistent or do not cancel"
+      },
+      "feature_columns_leak_free": {
+        "ok": true,
+        "detail": ""
+      },
+      "no_test_season_rows_in_dev_data": {
+        "ok": true,
+        "detail": "0 rows from 2026"
+      },
+      "brownlow_total_6_share_ge_95pct": {
+        "ok": true,
+        "detail": "1.000 of matches total 6"
+      }
+    }
+  },
+  "sql": {
+    "matches": 2752,
+    "player_matches": 123122,
+    "matches_vote_total_not_expected": 0,
+    "duplicate_player_matches": 0,
+    "negative_stat_rows": 0
+  },
+  "crosswalk_audit": {
+    "home_away_reversal_rows": 23,
+    "round_mismatch_rows": 12,
+    "duplicate_vote_page_rows_dropped": 0
+  },
+  "first_data_attempt_exit": 2,
+  "protocol_unchanged": true,
+  "pilot_choices_unchanged": true,
+  "pilot_raw_cache_reused": {
+    "aflca_coaches_votes_2024.parquet": true,
+    "aflca_coaches_votes_2025.parquet": true,
+    "afltables_player_stats_2024.parquet": true,
+    "afltables_player_stats_2025.parquet": true
+  },
+  "test_data_absent": true,
+  "r_lock": {
+    "packages": 49,
+    "r_version": "4.5.0",
+    "lock_sha256": "03039535cfa08295e181934b90a03a7b1406e2dfca0189e4e772b5054ed7a5b5",
+    "empty_library_restore_exit": 0
+  }
+}

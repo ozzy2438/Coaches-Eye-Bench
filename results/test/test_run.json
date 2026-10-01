@@ -1,0 +1,14 @@
+{
+  "kind": "test_receipt",
+  "synthetic": false,
+  "protocol_sha256": "e910f956435a4455f84bded4d99f3f3ad1ca6e369ea127045423d5862b0d40af",
+  "git": {
+    "commit": "144f0173ac187b5d9b6f3c38b11451da2f5d4259",
+    "dirty": true
+  },
+  "created_utc": "2026-10-01T11:00:20Z",
+  "frozen_choices_sha256": "969c7d6c3a39b596d1695fe939c3b9118cf51f9e31e3fcb88cb766801357914c",
+  "n_matches": 206,
+  "test_season": 2026,
+  "data_manifest_sha256": "8fef281a2ec3dae87cd706725c95650f3bfc788496cd806633a1a5ac3820e0a3"
+}

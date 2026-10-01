@@ -32,6 +32,10 @@ def test_smoke_outputs_are_stamped_synthetic(smoke_dir):
 def test_report_banners_synthetic_and_readme_block_is_replaced(smoke_dir, tmp_path):
     md, block = report.build_results(smoke_dir)
     assert "SYNTHETIC FIXTURE OUTPUT - NOT A RESULT" in md and "Test:" in md
+    assert "Team residuals" in md and "signed residuals are structurally zero" in md
+    assert "model-selection uncertainty" in md and "Holm correction" in md
+    assert "Secondary metrics: the same pre-specified contrasts" in md
+    assert "Pre-named features of interest: first and last block estimates" in md
     readme = tmp_path / "README.md"
     readme.write_text(f"intro\n{report.START}\nOLD\n{report.END}\noutro\n")
     report.write_report(smoke_dir, readme)
