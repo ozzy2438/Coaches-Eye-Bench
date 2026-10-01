@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from .config import load_params
 from .evaluate import COMPARISONS, MODELS
 from .io_utils import read_json
 
@@ -22,6 +23,14 @@ def _f(d: dict, nd: int = 3) -> str:
 
 def _p(p: float) -> str:
     return "<0.001" if p < 0.001 else f"{p:.3f}"
+
+
+def _analysis_table(table: pd.DataFrame, nd: int = 3) -> str:
+    table = table.copy()
+    for col in table.columns:
+        if col.startswith("p_"):
+            table[col] = table[col].map(_p)
+    return table.round(nd).to_markdown(index=False)
 
 
 def metrics_table(res: dict) -> str:
@@ -136,7 +145,7 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
             block[-1] = status
             lines[-1] = status + "\n"
     if val is not None:
-        lines += ["## Validation seasons (selection happened here, so M1/M2 are mildly optimistic)\n",
+        lines += ["## Validation seasons (also used for M1/M2 specification selection)\n",
                   f"Evaluated on {val['n_matches']} matches and {val['n_player_matches']} player-matches. "
                   "Intervals are 95% match-bootstrap intervals conditional on the selected specification. "
                   "The three pre-specified paired model comparisons use sign-flip tests with Holm correction "
@@ -182,22 +191,22 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
                      "box-score proxies. Only H2a was pre-specified; other role contrasts are exploratory.\n")
         rc = results / "val" / "q2_role.csv"
         if rc.exists():
-            lines += [pd.read_csv(rc).round(3).to_markdown(index=False), ""]
+            lines += [_analysis_table(pd.read_csv(rc)), ""]
         ph = results / "val" / "q2_posthoc_m2_role.csv"
         if ph.exists():
             lines += ["### Post-hoc: residuals relative to M2 (not in protocol)\n",
-                      pd.read_csv(ph).round(3).to_markdown(index=False), ""]
+                      _analysis_table(pd.read_csv(ph)), ""]
         team_p = results / "val" / "q2_team.csv"
         if team_p.exists():
             lines += ["### Team residuals (match-bootstrap intervals; Holm-adjusted within teams)\n",
-                      pd.read_csv(team_p).round(4).to_markdown(index=False), ""]
+                      _analysis_table(pd.read_csv(team_p), 4), ""]
         close_p = results / "val" / "q2_closeness.csv"
         if close_p.exists():
             lines += ["### Match closeness: signed residuals are structurally zero\n",
                       "All players in a match share its closeness group, and residuals sum to zero "
                       "per match. These signed group means cannot measure differences in accuracy "
                       "across match contexts; numerical p-values must not be interpreted.\n",
-                      pd.read_csv(close_p).round(4).to_markdown(index=False), ""]
+                      _analysis_table(pd.read_csv(close_p), 4), ""]
         if q2.get("umpire_agreement"):
             ua = q2["umpire_agreement"]
             lines += ["### Agreement with coaches: Brownlow ranking versus M1\n",
@@ -213,18 +222,25 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
                       "development seasons. Non-overlap is a descriptive criterion, not a "
                       "Holm-corrected test. Logit coefficients for different ordinal targets "
                       "are relative to each target's residual scale.\n",
-                      t[t["differs"]].round(3).to_markdown(index=False) if t["differs"].any() else "None.", ""]
+                      _analysis_table(t[t["differs"]]) if t["differs"].any() else "None.", ""]
     q3 = results / "val" / "q3_separation.csv"
     if q3.exists():
         t = pd.read_csv(q3)
+        alpha = load_params().inference.alpha
+        first_last = t["p_holm_first_last"] < alpha
+        named = t["highlight"]
         lines += ["## Q3 trends: features whose block CIs clearly separate\n",
+                  f"Across {len(t)} features, {int(t['any_pair_ci_nonoverlap'].sum())} meet the "
+                  f"any-pair interval criterion; {int(first_last.sum())} first-versus-last Holm "
+                  f"tests have p < {alpha}. Among the {int(named.sum())} pre-named features, "
+                  f"{int((first_last & named).sum())} first-versus-last Holm tests meet that threshold.\n",
                   "The selected M1 specification is fitted separately in each season block, with "
                   "one shared development-data scaler. The protocol flags any pair of "
                   "non-overlapping block intervals; the Holm p-values below test first versus last "
                   "blocks across features. These are different criteria. Coefficient shifts are "
                   "associations on a logit scale and may reflect changing residual noise, correlated "
                   "statistics, rules or model fit, rather than changed coaching preferences.\n",
-                  t[t["any_pair_ci_nonoverlap"]].round(3).to_markdown(index=False)
+                  _analysis_table(t[t["any_pair_ci_nonoverlap"]])
                   if t["any_pair_ci_nonoverlap"].any() else "No feature clearly separates.", ""]
         highlighted = t[t["highlight"]].copy()
         if len(highlighted):
