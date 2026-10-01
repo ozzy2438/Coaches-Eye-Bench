@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+# raw scraped tables and local stores are never committed (see DATA.md)
+data/
+# smoke / post-hoc / local-only outputs
+results/smoke/
+results/post_hoc/
+.env
