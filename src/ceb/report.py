@@ -162,10 +162,9 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
         for f in findings(val, q2, "validation seasons; used for model selection"):
             lines.append(f"- {f}")
         lines.append("")
-        if test is None and not synthetic:
-            block += ["", metrics_table(val), "", "Validation only: M1/M2 used these seasons "
-                      "for specification selection. Full paired tests and Q2/Q3 limitations are "
-                      "in `results/RESULTS.md`."]
+        block += ["", f"**Validation (2024–2025): {val['n_matches']} matches; used for model selection.**",
+                  "", metrics_table(val), "", "These conditional intervals omit model-selection "
+                  "uncertainty. Full paired tests and Q2/Q3 limitations are in `results/RESULTS.md`."]
         split_p = results / "val" / "split.json"
         if split_p.exists():
             split_d = read_json(split_p)
@@ -179,10 +178,53 @@ def build_results(results: Path, synthetic_ok: bool = False) -> tuple[str, str]:
                       "Pilot choices are stored separately and are not imported.\n"]
     if test is not None:
         split = f"{test.get('test_season', 'test')} held-out season"
-        lines += [f"## Test: {split} (single run, frozen protocol)\n", metrics_table(test), "",
+        params = load_params()
+        lines += [f"## Test: {split} (single run, frozen protocol)\n",
+                  f"Evaluated on {test['n_matches']} matches and {test['n_player_matches']} player-matches. "
+                  f"Frozen specifications were refitted on seasons {test.get('fit_seasons', [])}; "
+                  "no test-based model or parameter selection followed. "
+                  f"95% match-bootstrap intervals use {params.inference.bootstrap_B} resamples and "
+                  f"paired sign-flip tests use {params.inference.permutation_n} permutations, with "
+                  "Holm correction across the three pre-specified contrasts within each metric. "
+                  "Intervals condition on the fitted models, treat matches as resampling units "
+                  "and do not measure uncertainty across future seasons or training runs.\n",
+                  metrics_table(test), "",
                   comparison_table(test), ""]
-        for f in findings(test, q2, split):
+        lines.append("### Secondary metrics: the same pre-specified contrasts\n")
+        for metric in ("top1", "recall5", "spearman"):
+            lines += [comparison_table(test, metric), ""]
+        descriptive = test.get("descriptive", {}).get("B1_vs_B0", {}).get("ndcg5")
+        if descriptive is not None:
+            lines += [f"B1 minus B0 NDCG@5: {_f(descriptive['diff'])}. This baseline comparison "
+                      "is descriptive; it is outside the three pre-specified inferential contrasts.\n"]
+        block += ["", f"**Held-out test ({test.get('test_season', 'test')}): "
+                  f"{test['n_matches']} matches; one evaluation with frozen choices.**",
+                  "", metrics_table(test), "", comparison_table(test), ""]
+        test_findings = findings(test, None, split)[:2]
+        secondary = []
+        for metric in ("top1", "recall5", "spearman"):
+            c = test["comparisons"]["M2_vs_M1"][metric]
+            supported = c["p_holm"] < params.inference.alpha and c["diff"]["lo"] > 0
+            secondary.append(f"{METRIC_NAMES[metric]} {_f(c['diff'])}, Holm p {_p(c['p_holm'])} "
+                             f"({'positive difference supported' if supported else 'positive difference not established'})")
+        test_findings.append("**M2 minus M1, secondary findings:** " + "; ".join(secondary) + ".")
+        for f in test_findings:
+            lines.append(f"- {f}")
             block.append(f"- {f}")
+        lines += ["", "A failed decision rule does not establish that the gain is below delta, "
+                  "nor that the models are equivalent. ECE intervals are descriptive; no paired "
+                  "calibration test was pre-specified. This is one held-out season and measures "
+                  "agreement with coaches, not causal value or demonstrated usefulness to a club. "
+                  "Q2/Q3 below use development data only.\n"]
+        qa_p = results / "test" / "data_quality.json"
+        if qa_p.exists():
+            audit = read_json(qa_p)
+            rates = audit["join"]["per_season"][str(test["test_season"])]
+            lines += ["### Test data quality and exclusions\n",
+                      f"Included {rates['included_matches']}/{rates['stats_matches']} source matches "
+                      f"({rates['included_matches'] / rates['stats_matches']:.3%}); vote-row match rate "
+                      f"{rates['match_rate_rows']:.3%}, vote-mass match rate {rates['match_rate_mass']:.3%}. "
+                      "All frozen QA gates passed. " + audit["exclusion_note"] + "\n"]
     if q2 is not None:
         lines.append("## Q2 blind spots (validation seasons)\n")
         lines.append("Residuals are actual minus M1 expected votes after expected votes are rescaled "

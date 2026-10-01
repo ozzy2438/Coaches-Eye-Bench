@@ -1,0 +1,73 @@
+{
+  "kind": "final_run_verification",
+  "created_utc": "2026-10-01T11:04:25.876454+00:00",
+  "pre_test_commit": "144f0173ac187b5d9b6f3c38b11451da2f5d4259",
+  "single_test_attempt": {
+    "command": "make eval-test",
+    "attempt": 1,
+    "started_utc": "2026-10-01T10:50:03Z",
+    "pre_test_commit": "144f0173ac187b5d9b6f3c38b11451da2f5d4259",
+    "frozen_choices_sha256": "969c7d6c3a39b596d1695fe939c3b9118cf51f9e31e3fcb88cb766801357914c",
+    "automatic_retry_allowed": false
+  },
+  "eval_test_exit": 0,
+  "protocol_sha256": "e910f956435a4455f84bded4d99f3f3ad1ca6e369ea127045423d5862b0d40af",
+  "frozen_choices_sha256": "969c7d6c3a39b596d1695fe939c3b9118cf51f9e31e3fcb88cb766801357914c",
+  "frozen_file_count": 78,
+  "unchanged_frozen_files": 77,
+  "presentation_only_changed_files": [
+    "src/ceb/report.py"
+  ],
+  "all_model_and_inference_source_unchanged": true,
+  "validation_artifacts_unchanged": true,
+  "dependency_locks_unchanged": true,
+  "r_locked_packages_verified": 49,
+  "test_season": 2026,
+  "refit_seasons": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "test_matches": 206,
+  "test_player_matches": 9476,
+  "second_test_guard_refusal": "results/test/test_run.json exists: the test season has already been evaluated once. Further analysis of 2026 must go under results/post_hoc/ and be labelled post-hoc",
+  "test_stamp_dirty_explanation": "The test data manifest and result outputs were new untracked files; all 78 frozen files matched immediately after the run. Only report presentation changed afterward.",
+  "checks": {
+    "full_existing_python_tests": 75,
+    "full_existing_tests_exit": 0,
+    "synthetic_smoke": "passed; fictional fixture only",
+    "r_helpers_exit": 0,
+    "existing_report_tests_after_presentation_change": 5,
+    "lint": "passed",
+    "protocol_guard": "passed",
+    "independent_test_sql": {
+      "matches": 206,
+      "player_matches": 9476,
+      "matches_vote_total_not_expected": 0,
+      "duplicate_player_matches": 0,
+      "negative_stat_rows": 0
+    },
+    "new_test_files": 0
+  },
+  "artifact_sha256": {
+    "results/test/data_quality.json": "0382073128820704d8c916974e617bf6a1392ebff035965aa3715abc26d66a87",
+    "results/test/figures/calibration.png": "3355d0a8f070863c3196d59e996088adc2a08d6d651cba53fd542070627bbfd6",
+    "results/test/figures/ndcg5.png": "ccfea39730cc1d48b64bc15a004976ed55dfc8bef5e9ce9670a1c80d9e2373cd",
+    "results/test/metrics.json": "3e7c609214e9d218f9d70692b336516bfef79ec396a32d87960b7b3f22c332ac",
+    "results/test/per_match.csv": "8c6522263abb15801fca75d6184540efcee06e83bbe4f6700e9f59508a427e8f",
+    "results/test/test_run.json": "4d5dc17006851b66434965dec1908cf7c6af5dc3ba18dc0d7819a8dbf285ee29",
+    "results/data_manifest_test.json": "8fef281a2ec3dae87cd706725c95650f3bfc788496cd806633a1a5ac3820e0a3",
+    "results/RESULTS.md": "0e9e67832034157a920263d57c7f5fd1ecf42d6ac3d93a27c189e8ee05879ebe"
+  }
+}
