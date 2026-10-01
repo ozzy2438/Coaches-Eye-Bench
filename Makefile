@@ -4,10 +4,13 @@ CEB      := $(PY) ceb
 DEV      := $(shell $(CEB) seasons dev 2>/dev/null || echo 2012:2025)
 TEST     := $(shell $(CEB) seasons test 2>/dev/null || echo 2026)
 
+restore-tag:  # recreate the protocol-frozen tag on a fresh clone (tag pushes were blocked in the build sandbox)
+	bash scripts/restore_protocol_tag.sh
+
 install-ci:  # copy the CI workflow into place (pushing it needs a token with the `workflows` scope)
 	mkdir -p .github/workflows && cp ci/github-actions-ci.yml .github/workflows/ci.yml
 
-.PHONY: install-ci help setup data data-test build build-test smoke smoke-real train eval-val eval-test \
+.PHONY: restore-tag install-ci help setup data data-test build build-test smoke smoke-real train eval-val eval-test \
         report card demo-card test lint check-protocol clean
 
 help:

@@ -10,6 +10,8 @@ The agent's sandbox egress policy returned 403 for `afltables.com`, `www.footywi
 * The real-data steps (CP1–CP4: `make data`, `make train`, `make eval-val`, `make eval-test`) have **not been run**; no real number exists in this repository.
 * `r/fetch.R` was written against the fitzRoy 1.8.0 *source* (read-only clone) and parse-checked with R 4.3.3, its pure helpers are tested, but it has **never executed against the live sites**. Treat the first `make data` as the integration test; if the AFLCA page layout or `scrape_coaches_votes` signature differ, the symptom will be a stop at the join-rate or QA gate, not silent bad data.
 
+**Repository side effects of the same sandbox:** pushing the branch worked; pushing the `protocol-frozen` tag returned 403 and the GitHub App had no `workflows` scope, so the CI workflow is shipped as `ci/github-actions-ci.yml` (with `make install-ci`) and the tag must be re-created and pushed by the owner (`make restore-tag`). CI has therefore not run on GitHub; the same lint/test/smoke commands were run locally, including from a clean clone with `uv sync --frozen`.
+
 ## B. Things found in the sources that shaped the design
 
 1. `fitzRoy::fetch_coaches_votes()` drops round 24 of 24-round seasons (`Round > 23 & !Finals`) and returns no finals flag → `r/fetch.R` calls `scrape_coaches_votes(finals = FALSE)` per round, up to the last box-score round.
