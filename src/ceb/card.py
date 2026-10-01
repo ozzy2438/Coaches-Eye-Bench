@@ -16,7 +16,7 @@ CSS = """
 @media (prefers-color-scheme:dark){:root{--bg:#1a1a19;--ink:#fff;--mut:#c3c2b7;--line:#383835;--hot:#e66767;--blue:#3987e5}}
 body{background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,sans-serif;margin:0 auto;max-width:900px;padding:16px}
 h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:24px 0 6px}.mut{color:var(--mut);font-size:13px}
-table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left}
+table{border-collapse:collapse;width:100%;font-size:14px;table-layout:fixed}th:nth-child(1){width:15%}th:nth-child(2){width:32%}th:nth-child(3){width:23%}th:nth-child(4){width:15%}th:nth-child(5){width:15%}th,td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left}
 th{color:var(--mut);font-weight:600}td.n{text-align:right;font-variant-numeric:tabular-nums}
 .hot{color:var(--hot);font-weight:600}.banner{border:1px solid var(--hot);color:var(--hot);padding:6px 10px;margin:8px 0}
 @media (max-width:560px){table{font-size:12.5px}th,td{padding:4px 5px}}
